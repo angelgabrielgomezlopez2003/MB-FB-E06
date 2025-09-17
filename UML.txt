@@ -1,0 +1,112 @@
+@startuml
+!pragma useIntermediatePackages false
+
+skinparam classAttributeIconSize 0
+
+package mx.uaemex.fi.isii.e06.patterns.adapter<<Folder>> {
+
+interface Transport {
+  + deliver()
+}
+
+class Truck implements Transport {
+}
+
+class Ship implements Transport {
+}
+
+class DeliverAdapter implements Transport {
+}
+
+class Repartidor {
+  + deliverPackage()
+}
+Repartidor *-- DeliverAdapter : use
+}
+
+package mx.uaemex.fi.isii.e06.patterns.bridge<<Folder>> {
+
+interface Transport {
+  + deliver()
+}
+
+abstract class TransportBridge implements Transport {
+  - Workactivity pickup
+  - Workactivity travel
+  - Workactivity deliver
+  # TransportBridge(Workactivity pickup, Workactivity travel, Workactivity deliver)
+}
+
+class Truck extends TransportBridge {
+}
+
+class Ship extends TransportBridge {
+}
+
+interface WorkAction {
+  + workActivity()
+}
+
+class Deliver implements WorkAction {
+}
+
+class Travel implements WorkAction {
+}
+
+TransportBridge *-- WorkAction : use
+}
+
+package mx.uaemex.fi.isii.e06.patterns.composite<<Folder>> {
+
+interface Composite {
+  + collect()
+  + deliver()
+  + add(Composite component)
+  + remove(Composite component)
+  + getChild(int index)
+}
+
+abstract class Vehicle implements Composite {
+  - String type
+  + Vehicle(String type)
+  + add(Composite component)
+  + remove(Composite component)
+  + getChild(int index)
+}
+
+class Bicycle extends Vehicle {
+  + Bicycle()
+  + collect()
+  + deliver()
+}
+
+class Motorcycle extends Vehicle {
+  + Motorcycle()
+  + collect()
+  + deliver()
+}
+
+class DeliveryGroup implements Composite {
+  - List<Composite> components
+  - String groupName
+  + DeliveryGroup(String groupName)
+  + collect()
+  + deliver()
+  + add(Composite component)
+  + remove(Composite component)
+  + getChild(int index)
+  + getComponentCount() : int
+}
+
+}
+
+package mx.uaemex.fi.isii.e06.patterns.main<<Folder>> {
+
+class Main {
+  + {static} main(String[] args)
+  - usingAdapter()
+  - usingBridge()
+  - usingComposite()
+}
+}
+@enduml
